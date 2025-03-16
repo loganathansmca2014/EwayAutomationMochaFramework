@@ -114,17 +114,17 @@ export const config: WebdriverIO.Config = {
     user: process.env.BROWSERSTACK_USERNAME,
     key: process.env.BROWSERSTACK_ACCESS_KEY,
     
-    services: [
-        ['browserstack', {
-            testObservability: true,
-            testObservabilityOptions: {
+    // services: [
+    //     ['browserstack', {
+    //         testObservability: true,
+    //         testObservabilityOptions: {
                 
-                projectName: "Your project name goes here",
-                buildName: "The static build job name goes here e.g. Nightly regression"
-            },
-            browserstackLocal: true
-        }]
-    ],
+    //             projectName: "Your project name goes here",
+    //             buildName: "The static build job name goes here e.g. Nightly regression"
+    //         },
+    //         browserstackLocal: true
+    //     }]
+    // ],
     //
     // Framework you want to run your specs with.
     // The following are supported: Mocha, Jasmine, and Cucumber
@@ -147,11 +147,18 @@ export const config: WebdriverIO.Config = {
     // Test reporter for stdout.
     // The only one supported by default is 'dot'
     // see also: https://webdriver.io/docs/dot-reporter
-    reporters: [['allure', {
-        outputDir: 'allure-results',
-        disableWebdriverStepsReporting: true,
-        disableWebdriverScreenshotsReporting: true,
-    }]],
+    reporters: [
+        [
+            'allure',
+            {
+                outputDir: 'allure-results',
+                disableWebdriverStepsReporting: true,
+                disableWebdriverScreenshotsReporting: true,
+            }
+        ],
+       
+    ],
+    
     // Options to be passed to Mocha.
     // See the full list at http://mochajs.org/
     mochaOpts: {
@@ -301,6 +308,7 @@ export const config: WebdriverIO.Config = {
      * @param {Array.<Object>} capabilities list of capabilities details
      * @param {<Object>} results object containing test results
      */
+   
     // onComplete: function(exitCode, config, capabilities, results) {
     // },
     /**
