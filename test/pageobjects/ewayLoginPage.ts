@@ -1,4 +1,5 @@
 import BrowserNaviGate from '../pageobjects/navComponents/browserNav';
+import logger from '../utils/logger'; // Import logger
 
 class EwayLoginPage {
     
@@ -18,9 +19,27 @@ class EwayLoginPage {
         return $('button[type="submit"]');
     }
     
-    async browserOpen() {
-        await browser.url('http://eway-dev.keenminds.in/');
-        await browser.pause(1000); // Allowing page to stabilize
+    // public async browserOpen() {
+    //     await browser.url('http://eway-dev.keenminds.in/');
+    //     await browser.pause(1000); // Allowing page to stabilize
+    // }
+
+    async launchApplication(url: string) {
+        logger.info("🚀 Launching browser efficiently...");
+    
+        await browser.setTimeout({
+            pageLoad: 6000,  // Reduce page load timeout (default ~30s)
+            implicit: 2000,  // Optimize implicit waits
+            script: 5000      // Optimize script execution time
+        });
+    
+        const currentUrl = await browser.getUrl();
+        if (currentUrl !== url) {
+            logger.info(`🌍 Navigating to URL: ${url}`);
+            await browser.url(url);
+        } else {
+            logger.info("✔ Already on the correct page, skipping navigation.");
+        }
     }
     
     get errorLabel() {

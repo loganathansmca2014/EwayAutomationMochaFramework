@@ -1,17 +1,17 @@
-[90m2025-03-15T21:32:25.330Z[39m [96mINFO[39m [97m@wdio/browserstack-service[39m BrowserStack service started with id: 962b7e7b-98c6-4604-8cf6-f21beb5a4c49
-[90m2025-03-15T21:32:25.341Z[39m [32mDEBUG[39m [97m@wdio/browserstack-service[39m Sending SDK event with data {
+[90m2025-03-16T16:23:07.897Z[39m [96mINFO[39m [97m@wdio/browserstack-service[39m BrowserStack service started with id: 7701a3ac-6287-4ae5-ba6d-ae75fe1bc416
+[90m2025-03-16T16:23:07.913Z[39m [32mDEBUG[39m [97m@wdio/browserstack-service[39m Sending SDK event with data {
   userName: '[REDACTED]',
   accessKey: '[REDACTED]',
   event_type: 'SDKTestAttempted',
   detectedFramework: 'WebdriverIO-mocha',
   event_properties: {
-    sdkRunId: '962b7e7b-98c6-4604-8cf6-f21beb5a4c49',
+    sdkRunId: '7701a3ac-6287-4ae5-ba6d-ae75fe1bc416',
     testhub_uuid: undefined,
     language_framework: 'WebdriverIO_mocha',
     referrer: 'WebdriverIO-mocha/9.11.0',
     language: 'WebdriverIO',
     languageVersion: 'v20.19.0',
-    buildName: 'undefined',
+    buildName: 'Optimized Test Build',
     buildIdentifier: 'undefined',
     os: 'Windows_NT',
     hostname: 'DESKTOP-GATH0OD',
@@ -26,76 +26,13 @@
     framework: 'mocha'
   }
 }
-[90m2025-03-15T21:32:25.903Z[39m [32mDEBUG[39m [97m@wdio/browserstack-service[39m Funnel Event Response: "{\"message\":\"SDK Event recorded successfully\"}"
-[90m2025-03-15T21:32:25.903Z[39m [32mDEBUG[39m [97m@wdio/browserstack-service[39m Funnel event success
-[90m2025-03-15T21:32:25.903Z[39m [32mDEBUG[39m [97m@wdio/browserstack-service[39m app is not defined in browserstack-service config, skipping ...
-[90m2025-03-15T21:32:25.904Z[39m [32mDEBUG[39m [97m@wdio/browserstack-service[39m Sending launch start event
-[90m2025-03-15T21:32:26.878Z[39m [32mDEBUG[39m [97m@wdio/browserstack-service[39m [Start_Build] Success response: {"observability":{"success":true,"options":{"allow_screenshots":true},"code":null,"errors":null,"error_trace_id":null},"accessibility":null,"automate":{"success":true,"options":{"allow_screenshots":true},"code":null,"errors":null,"error_trace_id":null},"build_hashed_id":"2dk2bsierlg6waog0whudbzln7c9jlwhhbxiewfz","jwt":"eyJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJicm93c2Vyc3RhY2tfb2IiLCJzdWIiOiI5NTMwMTk3IiwiZ3JvdXBfaWQiOjk0Mzg1ODksInVzZXJfaWQiOjk1MzAxOTcsImJ1aWxkX2hhc2hlZF9pZCI6IjJkazJic2llcmxnNndhb2cwd2h1ZGJ6bG43YzlqbHdoaGJ4aWV3ZnoiLCJwcm9qZWN0X25hbWUiOiJZb3VyIHByb2plY3QgbmFtZSBnb2VzIGhlcmUiLCJob29rX2FzX3Rlc3QiOiIxIiwiYnVpbGRfbmFtZSI6IlRoZSBzdGF0aWMgYnVpbGQgam9iIG5hbWUgZ29lcyBoZXJlIGUgZyBOaWdodGx5IHJlZ3Jlc3Npb24iLCJwcm9kdWN0X21hcCI6IntcIm9ic2VydmFiaWxpdHlcIjp0cnVlLFwiYXV0b21hdGVcIjp0cnVlLFwiYnN0YWNrQXV0b21hdGlvblwiOnRydWUsXCJwcm9kdWN0RmlsdGVyU291cmNlXCI6dHJ1ZSxcImNhZFwiOnRydWUsXCJvcmlnaW5Gcm9tUHJvZHVjdE1hcFwiOlwiQXV0b21hdGVcIn0iLCJncnJfcmVnaW9uIjoiIiwiaXNfbG93X3ZvbHVtZSI6ZmFsc2UsInNpZ25pbmdfa2V5X2hhc2giOiI3ZGY2ZTY4M2M2NzA5MWI2YmNhYjQ5NWUzZjdmMmFhMTY5Yzc1ZjMxZmJhZmE1MGY0NzAyNGM4MWI5ZTcwNTNkIiwiaWF0IjoxNzQyMDc0MzQ3LCJleHAiOjE3NDI0MTk5NDd9.sCD4J9ens-z1mTs6t7pEZ4EhPC-FKqSO9euPBHPhTxE","discard_build":null,"app_automate":null}
-[90m2025-03-15T21:32:26.879Z[39m [96mINFO[39m [97m@wdio/browserstack-service[39m Testhub started with id: 2dk2bsierlg6waog0whudbzln7c9jlwhhbxiewfz
-[90m2025-03-15T21:32:26.943Z[39m [96mINFO[39m [97m@wdio/browserstack-service[39m Browserstack Local successfully started after 1584.1918999999998ms
-[90m2025-03-15T21:32:37.894Z[39m [32mDEBUG[39m [97m@wdio/browserstack-service[39m teardown started
-[90m2025-03-15T21:32:37.895Z[39m [32mDEBUG[39m [97m@wdio/browserstack-service[39m teardown ended
-[90m2025-03-15T21:32:38.460Z[39m [32mDEBUG[39m [97m@wdio/browserstack-service[39m Inside OnComplete hook..
-[90m2025-03-15T21:32:38.460Z[39m [32mDEBUG[39m [97m@wdio/browserstack-service[39m Sending stop launch event
-[90m2025-03-15T21:32:39.230Z[39m [32mDEBUG[39m [97m@wdio/browserstack-service[39m [STOP_BUILD] Success response: 
-[90m2025-03-15T21:32:39.236Z[39m [96mINFO[39m [97m@wdio/browserstack-service[39m Browserstack Local successfully started after 770.3624999999993ms
-[90m2025-03-15T21:32:39.238Z[39m [96mINFO[39m [97m@wdio/browserstack-service[39m BrowserStack service run ended for id: 962b7e7b-98c6-4604-8cf6-f21beb5a4c49 testhub id: 2dk2bsierlg6waog0whudbzln7c9jlwhhbxiewfz
-[90m2025-03-15T21:32:39.240Z[39m [32mDEBUG[39m [97m@wdio/browserstack-service[39m Reading worker file worker-data-108.json
-[90m2025-03-15T21:32:39.241Z[39m [32mDEBUG[39m [97m@wdio/browserstack-service[39m Reading worker file worker-data-9020.json
-[90m2025-03-15T21:32:39.254Z[39m [32mDEBUG[39m [97m@wdio/browserstack-service[39m Sending SDK event with data {
-  userName: '[REDACTED]',
-  accessKey: '[REDACTED]',
-  event_type: 'SDKTestSuccessful',
-  detectedFramework: 'WebdriverIO-mocha',
-  event_properties: {
-    sdkRunId: '962b7e7b-98c6-4604-8cf6-f21beb5a4c49',
-    testhub_uuid: '2dk2bsierlg6waog0whudbzln7c9jlwhhbxiewfz',
-    language_framework: 'WebdriverIO_mocha',
-    referrer: 'WebdriverIO-mocha/9.11.0',
-    language: 'WebdriverIO',
-    languageVersion: 'v20.19.0',
-    buildName: 'undefined',
-    buildIdentifier: 'undefined',
-    os: 'Windows_NT',
-    hostname: 'DESKTOP-GATH0OD',
-    productMap: {
-      observability: true,
-      accessibility: false,
-      percy: false,
-      automate: true,
-      app_automate: false
-    },
-    product: [ 'observability', 'automate' ],
-    framework: 'mocha',
-    productUsage: {
-      testObservability: {
-        enabled: true,
-        manuallySet: true,
-        buildHashedId: '2dk2bsierlg6waog0whudbzln7c9jlwhhbxiewfz',
-        events: {
-          buildEvents: {
-            started: { isTriggered: true, status: 'success', error: undefined },
-            finished: { isTriggered: true, status: 'success', error: undefined }
-          },
-          testEvents: {
-            started: { triggeredCount: 0, sentCount: 0, failedCount: 0 },
-            finished: { triggeredCount: 0, sentCount: 0, failedCount: 0 }
-          },
-          hookEvents: {
-            started: { triggeredCount: 0, sentCount: 0, failedCount: 0 },
-            finished: { triggeredCount: 0, sentCount: 0, failedCount: 0 }
-          },
-          logEvents: { triggeredCount: 0, sentCount: 0, failedCount: 0 },
-          cbtSessionEvents: { triggeredCount: 0, sentCount: 0, failedCount: 0 }
-        }
-      }
-    }
-  }
-}
-[90m2025-03-15T21:32:39.623Z[39m [32mDEBUG[39m [97m@wdio/browserstack-service[39m Funnel Event Response: "{\"message\":\"SDK Event recorded successfully\"}"
-[90m2025-03-15T21:32:39.624Z[39m [32mDEBUG[39m [97m@wdio/browserstack-service[39m Funnel event success
-[90m2025-03-15T21:32:40.775Z[39m [96mINFO[39m [97m@wdio/browserstack-service[39m Upload response: {
-  "status": "success",
-  "message": "Logs upload successful in file - logs.gz"
-}
-2025-03-15T21:32:43.192Z DEBUG @wdio/browserstack-service Successfully uploaded performance events Bravo
+[90m2025-03-16T16:23:08.471Z[39m [32mDEBUG[39m [97m@wdio/browserstack-service[39m Funnel Event Response: "{\"message\":\"SDK Event recorded successfully\"}"
+[90m2025-03-16T16:23:08.472Z[39m [32mDEBUG[39m [97m@wdio/browserstack-service[39m Funnel event success
+[90m2025-03-16T16:23:08.472Z[39m [32mDEBUG[39m [97m@wdio/browserstack-service[39m app is not defined in browserstack-service config, skipping ...
+[90m2025-03-16T16:23:08.473Z[39m [32mDEBUG[39m [97m@wdio/browserstack-service[39m Sending launch start event
+[90m2025-03-16T16:23:09.713Z[39m [32mDEBUG[39m [97m@wdio/browserstack-service[39m [Start_Build] Success response: {"observability":{"success":true,"options":{"allow_screenshots":true},"code":null,"errors":null,"error_trace_id":null},"accessibility":null,"automate":{"success":true,"options":{"allow_screenshots":true},"code":null,"errors":null,"error_trace_id":null},"build_hashed_id":"grfr50qnwrpfbbg3escr3l9podliti8p3erllp0t","jwt":"eyJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJicm93c2Vyc3RhY2tfb2IiLCJzdWIiOiI5NTMwMTk3IiwiZ3JvdXBfaWQiOjk0Mzg1ODksInVzZXJfaWQiOjk1MzAxOTcsImJ1aWxkX2hhc2hlZF9pZCI6ImdyZnI1MHFud3JwZmJiZzNlc2NyM2w5cG9kbGl0aThwM2VybGxwMHQiLCJwcm9qZWN0X25hbWUiOiJXZWJkcml2ZXJJTyBCcm93c2VyU3RhY2sgT3B0aW1pemF0aW9uIiwiaG9va19hc190ZXN0IjoiMSIsImJ1aWxkX25hbWUiOiJPcHRpbWl6ZWQgVGVzdCBCdWlsZCIsInByb2R1Y3RfbWFwIjoie1wib2JzZXJ2YWJpbGl0eVwiOnRydWUsXCJhdXRvbWF0ZVwiOnRydWUsXCJic3RhY2tBdXRvbWF0aW9uXCI6dHJ1ZSxcInByb2R1Y3RGaWx0ZXJTb3VyY2VcIjp0cnVlLFwiY2FkXCI6dHJ1ZSxcIm9yaWdpbkZyb21Qcm9kdWN0TWFwXCI6XCJBdXRvbWF0ZVwifSIsImdycl9yZWdpb24iOiIiLCJpc19sb3dfdm9sdW1lIjpmYWxzZSwic2lnbmluZ19rZXlfaGFzaCI6IjdkZjZlNjgzYzY3MDkxYjZiY2FiNDk1ZTNmN2YyYWExNjljNzVmMzFmYmFmYTUwZjQ3MDI0YzgxYjllNzA1M2QiLCJpYXQiOjE3NDIxNDIxODksImV4cCI6MTc0MjQ4Nzc4OX0.AGfXIBCy7OkmuAiQfpZN7axgCn0PLUAR2I6lN1Zj2oU","discard_build":null,"app_automate":null}
+[90m2025-03-16T16:23:09.713Z[39m [96mINFO[39m [97m@wdio/browserstack-service[39m Testhub started with id: grfr50qnwrpfbbg3escr3l9podliti8p3erllp0t
+[90m2025-03-16T16:23:09.716Z[39m [96mINFO[39m [97m@wdio/browserstack-service[39m browserstackLocal is not enabled - skipping...
+[90m2025-03-16T16:23:20.513Z[39m [32mDEBUG[39m [97m@wdio/browserstack-service[39m Inside OnComplete hook..
+[90m2025-03-16T16:23:20.513Z[39m [32mDEBUG[39m [97m@wdio/browserstack-service[39m Sending stop launch event
+2025-03-16T16:23:23.183Z DEBUG @wdio/browserstack-service Successfully uploaded performance events Bravo

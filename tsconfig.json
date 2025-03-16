@@ -11,7 +11,8 @@
             "node",
             "@wdio/globals/types",
             "expect-webdriverio",
-            "@wdio/mocha-framework"
+            "@wdio/mocha-framework",
+            "@wdio/types"
         ],
         "skipLibCheck": true,
         "noEmit": true,
@@ -26,7 +27,8 @@
         "noFallthroughCasesInSwitch": true
     },
     "include": [
-        "test",
-        "wdio.conf.ts"
-    ]
+        "wdio.conf.ts", "test/**/*.ts"
+        
+    ],
+    "exclude": ["node_modules"]
 }

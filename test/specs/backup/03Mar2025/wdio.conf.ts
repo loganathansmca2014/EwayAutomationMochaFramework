@@ -1,29 +1,6 @@
-import os from 'os';
-let startTime: Date; // ✅ Declare globally
-let endTime: Date;   // ✅ Declare globally
-function getBrowserStackOS() {
-    const platform = os.type(); // Returns "Windows_NT", "Darwin", or "Linux"
-    if (platform.includes('Windows')) return 'Windows';
-    if (platform.includes('Darwin')) return 'OS X'; // macOS
-    if (platform.includes('Linux')) return 'Linux';
-    return 'Unknown';
-}
-function getBrowserStackOSVersion() {
-    const release = os.release();
-    if (release.startsWith('10.')) return '10'; // Windows 10
-    if (release.startsWith('11.')) return '11'; // Windows 11
-    if (release.startsWith('6.')) return '7'; // Windows 7
-    return 'latest';
-}function getEnvironment(testUrl: string): string {
-    const hostname = new URL(testUrl).hostname;
-    const envMatch = hostname.match(/-(dev|qa|prod|staging)\./);
-    return envMatch ? envMatch[1].toUpperCase() : 'UNKNOWN';
-}
+
 
 export const config: WebdriverIO.Config = {
-
-    user: process.env.BROWSERSTACK_USERNAME || 'loganathansengot_Cg04QJ',
-    key: process.env.BROWSERSTACK_ACCESS_KEY || 'h9ASXZxvaPCrDUtr6GrB',
     //
     // user: process.env.BROWSERSTACK_USERNAME,
     // key: process.env.BROWSERSTACK_ACCESS_KEY,
@@ -80,12 +57,12 @@ export const config: WebdriverIO.Config = {
     //
     // Define the capabilities (we are setting Chrome as the browser)
 
-    // capabilities: [{
-    //     browserName: 'chrome',
-    //     'goog:chromeOptions': {
-    //       args: ['--no-sandbox', '--disable-dev-shm-usage'],
-    //     }
-    //   }],
+    capabilities: [{
+        browserName: 'chrome',
+        'goog:chromeOptions': {
+          args: ['--no-sandbox', '--disable-dev-shm-usage'],
+        }
+      }],
     //
     // ===================
     // Test Configurations
@@ -119,7 +96,6 @@ export const config: WebdriverIO.Config = {
     // If your `url` parameter starts without a scheme or `/` (like `some/path`), the base url
     // gets prepended directly.
     baseUrl: 'http://eway-dev.keenminds.in/',
-    
     //
     // Default timeout for all waitFor* commands.
     
@@ -137,22 +113,9 @@ export const config: WebdriverIO.Config = {
     // your test setup with almost no effort. Unlike plugins, they don't add new
     // commands. Instead, they hook themselves up into the test process.
     // services: ['selenium-standalone'],
-    services: ['browserstack'], // Make sure BrowserStack service is included
-    capabilities: [{
-        browserName: 'chrome',
-        'bstack:options': {
-            os: getBrowserStackOS(), // ✅ Fix OS Name
-            osVersion: getBrowserStackOSVersion(), // ✅ Fix OS Version
-            projectName: 'WebdriverIO BrowserStack Optimization',
-            buildName: 'Optimized Test Build',
-            sessionName: `Web Automation Test - ${new Date().toISOString()}`,
-            seleniumVersion: '4.8.0',
-            networkLogs: true,
-            debug: true,
-        }
-    }], // Set true if testing a local app
-  
-  
+
+    user: process.env.BROWSERSTACK_USERNAME,
+    key: process.env.BROWSERSTACK_ACCESS_KEY,
     
     // services: [
     //     ['browserstack', {
@@ -251,29 +214,6 @@ export const config: WebdriverIO.Config = {
      */
     // beforeSession: function (config, capabilities, specs, cid) {
     // },
-    before: async function () {
-        startTime = new Date(); // ✅ Now it is correctly assigned
-        console.log(`Test Started: ${startTime}`);
-        const testUrl = 'https://eway-dev.keenmind.in';
-        const environment = getEnvironment(testUrl);
-        const machineName = os.hostname();
-        const osName = os.type();
-
-        // ✅ Fix: Add `[]` as the second argument
-       await  browser.execute(
-          `browserstack_executor: {"action": "setSessionName", "arguments": {"name": "Test on ${machineName} - ${environment} -${osName} -${testUrl}(${new Date().toISOString()})"}}`,
-          []
-        );
-    },
-    
-    after: async function (result, capabilities, specs) {
-        if (!browser.sessionId) {
-            console.warn("WebDriver session already closed. Skipping post-execution commands.");
-            return;
-        }
-    
-        await browser.execute('browserstack_executor: {"action": "annotate", "arguments": {"data": "Test Completed"}}');
-    },
     /**
      * Gets executed before test execution begins. At this point you can access to all global
      * variables like `browser`. It is the perfect place to define custom commands.
@@ -325,23 +265,8 @@ export const config: WebdriverIO.Config = {
      * @param {object}  result.retries   information about spec related retries, e.g. `{ attempts: 0, limit: 0 }`
      */
     afterTest: async function (test, context, { error, result, duration, passed, retries }) {
-       
         if (!passed) {
             await browser.takeScreenshot();
-        }
-
-        if (!browser.sessionId) {
-            console.warn("Session already closed, skipping BrowserStack execution.");
-            return;
-        }
-    
-        try {
-            await browser.execute(
-                `browserstack_executor: {"action": "setSessionStatus", "arguments": {"status":"${error ? 'failed' : 'completed'}", "reason": "${error ? error.message : 'Execution Finished'}"}}`,
-                []
-            );
-        } catch (err) {
-            console.error("Failed to update BrowserStack status:", err);
         }
     },
 

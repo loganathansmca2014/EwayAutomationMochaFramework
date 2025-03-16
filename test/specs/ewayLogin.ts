@@ -7,7 +7,7 @@ import {faker} from '@faker-js/faker';
 describe("Feature: Login Module for Eway", () => {
     beforeEach('Before each Test', async () => {
         logger.info("Opening browser...");
-        await EwayLoginPage.browserOpen();
+        await EwayLoginPage.launchApplication('./');
     });
 
     describe("Valid User Login:", () => {
