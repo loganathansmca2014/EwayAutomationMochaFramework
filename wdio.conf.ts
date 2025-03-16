@@ -1,6 +1,10 @@
 import os from 'os';
 let startTime: Date; // ✅ Declare globally
-let endTime: Date;   // ✅ Declare globally
+let endTime: Date;
+
+import { getEnvironmentDetails } from "./test/utils/environment"; // Import your function
+
+// ✅ Declare globally
 function getBrowserStackOS() {
     const platform = os.type(); // Returns "Windows_NT", "Darwin", or "Linux"
     if (platform.includes('Windows')) return 'Windows';
@@ -14,17 +18,14 @@ function getBrowserStackOSVersion() {
     if (release.startsWith('11.')) return '11'; // Windows 11
     if (release.startsWith('6.')) return '7'; // Windows 7
     return 'latest';
-}function getEnvironment(testUrl: string): string {
-    const hostname = new URL(testUrl).hostname;
-    const envMatch = hostname.match(/-(dev|qa|prod|staging)\./);
-    return envMatch ? envMatch[1].toUpperCase() : 'UNKNOWN';
 }
 
 export const config: WebdriverIO.Config = {
-
-    user: process.env.BROWSERSTACK_USERNAME || 'loganathansengot_Cg04QJ',
-    key: process.env.BROWSERSTACK_ACCESS_KEY || 'h9ASXZxvaPCrDUtr6GrB',
-    //
+    user: process.env.BROWSERSTACK_USERNAME,  // ✅ Use environment variable
+    key: process.env.BROWSERSTACK_ACCESS_KEY, // ✅ Use environment variable
+    // user: process.env.BROWSERSTACK_USERNAME || 'loganathansengot_Cg04QJ',
+    // key: process.env.BROWSERSTACK_ACCESS_KEY || 'h9ASXZxvaPCrDUtr6GrB',
+    // //
     // user: process.env.BROWSERSTACK_USERNAME,
     // key: process.env.BROWSERSTACK_ACCESS_KEY,
     // ====================
@@ -118,11 +119,12 @@ export const config: WebdriverIO.Config = {
     // with `/`, the base url gets prepended, not including the path portion of your baseUrl.
     // If your `url` parameter starts without a scheme or `/` (like `some/path`), the base url
     // gets prepended directly.
-    baseUrl: 'http://eway-dev.keenminds.in/',
+    baseUrl: process.env.BASE_URL || 'http://default-url.com', // ✅ Use env variable
     
+   
     //
     // Default timeout for all waitFor* commands.
-    
+
     waitforTimeout: 10000,
     //
     // Default timeout in milliseconds for request
@@ -149,16 +151,18 @@ export const config: WebdriverIO.Config = {
             seleniumVersion: '4.8.0',
             networkLogs: true,
             debug: true,
+            // userName: process.env.BROWSERSTACK_USERNAME,
+            // accessKey: process.env.BROWSERSTACK_ACCESS_KEY
         }
     }], // Set true if testing a local app
-  
-  
-    
+
+
+
     // services: [
     //     ['browserstack', {
     //         testObservability: true,
     //         testObservabilityOptions: {
-                
+
     //             projectName: "Your project name goes here",
     //             buildName: "The static build job name goes here e.g. Nightly regression"
     //         },
@@ -196,9 +200,9 @@ export const config: WebdriverIO.Config = {
                 disableWebdriverScreenshotsReporting: true,
             }
         ],
-       
+
     ],
-    
+
     // Options to be passed to Mocha.
     // See the full list at http://mochajs.org/
     mochaOpts: {
@@ -252,28 +256,36 @@ export const config: WebdriverIO.Config = {
     // beforeSession: function (config, capabilities, specs, cid) {
     // },
     before: async function () {
-        startTime = new Date(); // ✅ Now it is correctly assigned
-        console.log(`Test Started: ${startTime}`);
-        const testUrl = 'https://eway-dev.keenmind.in';
-        const environment = getEnvironment(testUrl);
-        const machineName = os.hostname();
-        const osName = os.type();
+        try {
+            const envDetails = await getEnvironmentDetails();
+            console.log("🌍 Environment Details:", envDetails);
+            console.log(`🚀 Running tests in ${process.env.ENVIRONMENT} environment`);
 
-        // ✅ Fix: Add `[]` as the second argument
-       await  browser.execute(
-          `browserstack_executor: {"action": "setSessionName", "arguments": {"name": "Test on ${machineName} - ${environment} -${osName} -${testUrl}(${new Date().toISOString()})"}}`,
-          []
-        );
+            // ✅ Correct JSON format by escaping the string properly
+            await browser.execute(
+                `browserstack_executor: ${JSON.stringify({
+                    action: "annotate",
+                    arguments: {
+                        data: `Environment Details: ${JSON.stringify(envDetails)}`
+                    }
+                })}`,
+                []
+            );
+        } catch (error) {
+            console.error("❌ Error fetching environment details:", error);
+        }
     },
-    
     after: async function (result, capabilities, specs) {
         if (!browser.sessionId) {
             console.warn("WebDriver session already closed. Skipping post-execution commands.");
             return;
         }
-    
+
         await browser.execute('browserstack_executor: {"action": "annotate", "arguments": {"data": "Test Completed"}}');
     },
+
+    
+    
     /**
      * Gets executed before test execution begins. At this point you can access to all global
      * variables like `browser`. It is the perfect place to define custom commands.
@@ -325,7 +337,7 @@ export const config: WebdriverIO.Config = {
      * @param {object}  result.retries   information about spec related retries, e.g. `{ attempts: 0, limit: 0 }`
      */
     afterTest: async function (test, context, { error, result, duration, passed, retries }) {
-       
+
         if (!passed) {
             await browser.takeScreenshot();
         }
@@ -334,7 +346,7 @@ export const config: WebdriverIO.Config = {
             console.warn("Session already closed, skipping BrowserStack execution.");
             return;
         }
-    
+
         try {
             await browser.execute(
                 `browserstack_executor: {"action": "setSessionStatus", "arguments": {"status":"${error ? 'failed' : 'completed'}", "reason": "${error ? error.message : 'Execution Finished'}"}}`,
@@ -386,7 +398,7 @@ export const config: WebdriverIO.Config = {
      * @param {Array.<Object>} capabilities list of capabilities details
      * @param {<Object>} results object containing test results
      */
-   
+
     // onComplete: function(exitCode, config, capabilities, results) {
     // },
     /**
