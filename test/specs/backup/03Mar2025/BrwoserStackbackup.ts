@@ -1,30 +1,14 @@
-import os from 'os';
-let startTime: Date; // ✅ Declare globally
-let endTime: Date;
+// Removed unused import 'os'
+// Removed unused variable startTime
 
 import { getEnvironmentDetails } from "./test/utils/environment"; // Import your function
 
 // ✅ Declare globally
-function getBrowserStackOS() {
-    const platform = os.type(); // Returns "Windows_NT", "Darwin", or "Linux"
-    if (platform.includes('Windows')) return 'Windows';
-    if (platform.includes('Darwin')) return 'OS X'; // macOS
-    if (platform.includes('Linux')) return 'Linux';
-    return 'Unknown';
-}
-function getBrowserStackOSVersion() {
-    const release = os.release();
-    if (release.startsWith('10.')) return '10'; // Windows 10
-    if (release.startsWith('11.')) return '11'; // Windows 11
-    if (release.startsWith('6.')) return '7'; // Windows 7
-    return 'latest';
-}
+// Removed unused function getBrowserStackOS
 
 export const config: WebdriverIO.Config = {
-    // user: process.env.BROWSERSTACK_USERNAME || 'loganathansengot_VRmPUI',
-    // key: process.env.BROWSERSTACK_ACCESS_KEY || 'q8jpitaJDQT9nZY3jVXT',
-    // // user: process.env.BROWSERSTACK_USERNAME || 'loganathansengot_Cg04QJ',
-    // key: process.env.BROWSERSTACK_ACCESS_KEY || 'h9ASXZxvaPCrDUtr6GrB',
+  
+   
     // //
     // user: process.env.BROWSERSTACK_USERNAME,
     // key: process.env.BROWSERSTACK_ACCESS_KEY,
@@ -119,43 +103,42 @@ export const config: WebdriverIO.Config = {
     // with `/`, the base url gets prepended, not including the path portion of your baseUrl.
     // If your `url` parameter starts without a scheme or `/` (like `some/path`), the base url
     // gets prepended directly.
-    baseUrl: process.env.BASE_URL || 'http://default-url.com', // ✅ Use env variable
-    
-   
+    baseUrl: process.env.BASE_URL || 'http://eway-dev.keenminds.in/', // ✅ Use env variable
+
+
     //
     // Default timeout for all waitFor* commands.
 
-    waitforTimeout: 10000,
-    //
-    // Default timeout in milliseconds for request
-    // if browser driver or grid doesn't send response
-    connectionRetryTimeout: 120000,
-    //
-    // Default request retries count
-    connectionRetryCount: 3,
-    //
-    // Test runner services
-    // Services take over a specific job you don't want to take care of. They enhance
-    // your test setup with almost no effort. Unlike plugins, they don't add new
-    // commands. Instead, they hook themselves up into the test process.
-    // services: ['selenium-standalone'],
-    //services: ['browserstack'], // Make sure BrowserStack service is included
+    user: process.env.BROWSERSTACK_USERNAME,
+    key: process.env.BROWSERSTACK_ACCESS_KEY,
+    services: ['browserstack'],
+
     capabilities: [{
         browserName: 'chrome',
         'bstack:options': {
-            os: getBrowserStackOS(), // ✅ Fix OS Name
-            osVersion: getBrowserStackOSVersion(), // ✅ Fix OS Version
+            os: 'Windows',
+            osVersion: '10',
             projectName: 'WebdriverIO BrowserStack Optimization',
             buildName: 'Optimized Test Build',
             sessionName: `Web Automation Test - ${new Date().toISOString()}`,
             seleniumVersion: '4.8.0',
             networkLogs: true,
             debug: true,
-            // userName: process.env.BROWSERSTACK_USERNAME,
-            // accessKey: process.env.BROWSERSTACK_ACCESS_KEY
+            idleTimeout: 1800, // Max timeout (30 minutes)
         }
-    }], // Set true if testing a local app
+    }],
 
+    // ✅ Increase WebDriver Timeouts
+    waitforTimeout: 60000, // Wait 60s for elements
+    connectionRetryTimeout: 300000, // Wait 5 mins for WebDriver connection
+    connectionRetryCount: 5, // Retry 5 times before failing
+ // Options to be passed to Mocha.
+    // See the full list at http://mochajs.org/
+   
+
+    mochaOpts: {
+        timeout: 300000 // Mocha test timeout (5 mins per test)
+    },
 
 
     // services: [
@@ -203,13 +186,7 @@ export const config: WebdriverIO.Config = {
 
     ],
 
-    // Options to be passed to Mocha.
-    // See the full list at http://mochajs.org/
-    mochaOpts: {
-        ui: 'bdd',
-        timeout: 60000
-    },
-
+   
     //
     // =====
     // Hooks
@@ -262,15 +239,15 @@ export const config: WebdriverIO.Config = {
             console.log(`🚀 Running tests in ${process.env.ENVIRONMENT} environment`);
 
             // ✅ Correct JSON format by escaping the string properly
-            // await browser.execute(
-            //     `browserstack_executor: ${JSON.stringify({
-            //         action: "annotate",
-            //         arguments: {
-            //             data: `Environment Details: ${JSON.stringify(envDetails)}`
-            //         }
-            //     })}`,
-            //     []
-            // );
+            await browser.execute(
+                `browserstack_executor: ${JSON.stringify({
+                    action: "annotate",
+                    arguments: {
+                        data: `Environment Details: ${JSON.stringify(envDetails)}`
+                    }
+                })}`,
+                []
+            );
         } catch (error) {
             console.error("❌ Error fetching environment details:", error);
         }
@@ -281,11 +258,11 @@ export const config: WebdriverIO.Config = {
             return;
         }
 
-       // await browser.execute('browserstack_executor: {"action": "annotate", "arguments": {"data": "Test Completed"}}');
+        await browser.execute('browserstack_executor: {"action": "annotate", "arguments": {"data": "Test Completed"}}');
     },
 
-    
-    
+
+
     /**
      * Gets executed before test execution begins. At this point you can access to all global
      * variables like `browser`. It is the perfect place to define custom commands.
@@ -347,12 +324,14 @@ export const config: WebdriverIO.Config = {
             return;
         }
 
-        // try {
-        //     await browser.execute(                `browserstack_executor: {"action": "setSessionStatus", "arguments": {"status":"${error ? 'failed' : 'completed'}", "reason": "${error ? error.message : 'Execution Finished'}"}}`,[]
-        //     );
-        // } catch (err) {
-        //     console.error("Failed to update BrowserStack status:", err);
-        // }
+        try {
+            await browser.execute(
+                `browserstack_executor: {"action": "setSessionStatus", "arguments": {"status":"${error ? 'failed' : 'completed'}", "reason": "${error ? error.message : 'Execution Finished'}"}}`,
+                []
+            );
+        } catch (err) {
+            console.error("Failed to update BrowserStack status:", err);
+        }
     },
 
 

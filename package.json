@@ -21,7 +21,7 @@
   },
   "scripts": {
     "test": "npx wdio run wdio.conf.ts",
-    "wdio": "wdio run ./wdio.conf.ts",
+    "wdio": "npx wdio run ./wdio.conf.ts",
     "allure:generate": "npx allure generate allure-results --clean -o allure-report",
     "allure:open": "npx allure open allure-report"
   },

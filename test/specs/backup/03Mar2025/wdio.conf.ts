@@ -114,8 +114,7 @@ export const config: WebdriverIO.Config = {
     // commands. Instead, they hook themselves up into the test process.
     // services: ['selenium-standalone'],
 
-    user: process.env.BROWSERSTACK_USERNAME,
-    key: process.env.BROWSERSTACK_ACCESS_KEY,
+    
     
     // services: [
     //     ['browserstack', {
