@@ -25,14 +25,13 @@ pipeline {
 
         stage('Install Dependencies') {
             steps {
-        bat 'npm install'
+                bat 'npm install'
             }
         }
 
         stage('Run WebdriverIO Tests') {
             steps {
-sh "bat 'npx wdio wdio.conf.ts'"
-
+                bat 'npx wdio wdio.conf.ts'
             }
             post {
                 always {
