@@ -39,8 +39,8 @@ jobs:
       with:
         server_address: smtp.gmail.com
         server_port: 587
-        username: ${{ secrets.SMTP_USERNAME }}
-        password: ${{ secrets.SMTP_PASSWORD }}
+        username: loganathansmca2014@gmail.com
+        password: India@12354
         subject: Build Success
         to: loganathansmca2014@gmail.com
         from: loganathansmca2014@gmail.com
