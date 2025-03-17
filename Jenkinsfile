@@ -8,7 +8,7 @@ pipeline {
     stages {
         stage('Clone Repository') {
             steps {
-                git credentialsId: github-token, url: 'https://github.com/loganathansmca2014/EwayAutomationMochaFramework.git'
+                git url: 'https://github.com/loganathansmca2014/EwayAutomationMochaFramework.git', branch: 'master'
             }
         }
 
