@@ -2,56 +2,52 @@ pipeline {
     agent any
 
     environment {
-        NODE_ENV = 'production'
+        NODEJS_VERSION = '23.10.0'  // Change to match your project
     }
 
     stages {
-        stage('Checkout') {
+        stage('Clone Repository') {
             steps {
-                git branch: 'master', url: 'https://github.com/loganathansmca2014/EwayAutomationMochaFramework.git'
+                git branch: 'main', url: 'https://github.com/loganathansmca2014/EwayAutomationMochaFramework.git'
+            }
+        }
+
+        stage('Setup Node.js') {
+            steps {
+                script {
+                    def nodeInstalled = sh(script: 'node -v', returnStatus: true) == 0
+                    if (!nodeInstalled) {
+                        error "Node.js is not installed. Install it and try again."
+                    }
+                }
             }
         }
 
         stage('Install Dependencies') {
             steps {
-                sh 'npm ci'
+        bat 'npm install'
             }
         }
 
-        stage('Run Tests') {
-            parallel {
-                stage('Unit Tests') {
-                    steps {
-                        sh 'npm run test:unit'
-                    }
-                }
-                stage('Integration Tests') {
-                    steps {
-                        sh 'npm run test:integration'
-                    }
-                }
-            }
-        }
-
-        stage('Build') {
+        stage('Run WebdriverIO Tests') {
             steps {
-                sh 'npm run build'
+                bat 'npx wdio wdio.conf.ts'
+'
             }
-        }
-
-        stage('Deploy') {
-            steps {
-                sh './deploy.sh'
+            post {
+                always {
+                    archiveArtifacts artifacts: '**/reports/**/*', allowEmptyArchive: true
+                }
             }
         }
     }
 
     post {
-        success {
-            echo '✅ Build and Deployment Successful!'
+        always {
+            echo "Pipeline Execution Completed!"
         }
         failure {
-            echo '❌ Build or Deployment Failed!'
+            echo "Pipeline Failed! Check the logs."
         }
     }
 }
