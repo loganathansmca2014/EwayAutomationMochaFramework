@@ -1,5 +1,4 @@
 //pipeline
-//piplelne
 
 pipeline {
     agent any
