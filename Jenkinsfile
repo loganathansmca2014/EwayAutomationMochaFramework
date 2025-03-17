@@ -4,20 +4,33 @@ pipeline {
     environment {
         NODEJS_VERSION = '23.10.0'  // Change to match your project
     }
-
-    stages {
-        stage('Clone Repository') {
+ stages {
+        stage('Check Git Installation') {
             steps {
-                git url: 'https://github.com/loganathansmca2014/EwayAutomationMochaFramework.git', branch: 'master'
+                script {
+                    def gitInstalled = bat(script: 'where git', returnStatus: true) == 0
+                    if (!gitInstalled) {
+                        error "Git is not installed or not found in PATH."
+                    }
+                }
             }
         }
 
-        stage('Setup Node.js') {
+        stage('Clone Repository') {
+            steps {
+                git(
+                    branch: 'master',
+                    url: 'https://github.com/loganathansmca2014/EwayAutomationMochaFramework.git'
+                )
+            }
+        }
+
+        stage('Check Node.js Installation') {
             steps {
                 script {
-                    def nodeInstalled = sh(script: 'node -v', returnStatus: true) == 0
+                    def nodeInstalled = bat(script: 'node -v', returnStatus: true) == 0
                     if (!nodeInstalled) {
-                        error "Node.js is not installed. Install it and try again."
+                        error "Node.js is not installed or not found in PATH."
                     }
                 }
             }
