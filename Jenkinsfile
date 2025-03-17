@@ -1,58 +1,42 @@
+//pipeline
+//piplelne
+
 pipeline {
     agent any
 
     triggers {
         githubPush()  // This enables webhook-based triggering
     }
-    environment {
-        NODEJS_VERSION = '23.10.0'  // Change to match your project
-    }
- stages {
-        stage('Check Git Installation') {
+
+    stages {
+        stage('Checkout') {
             steps {
-                script {
-                    def gitInstalled = bat(script: 'where git', returnStatus: true) == 0
-                    if (!gitInstalled) {
-                        error "Git is not installed or not found in PATH."
-                    }
-                }
+                git branch: 'master', url: 'https://github.com/loganathansmca2014/EwayAutomationMochaFramework.git'
             }
         }
 
-        stage('Clone Repository') {
+        stage('Build') {
             steps {
-                git(
-                    branch: 'master',
-                    url: 'https://github.com/loganathansmca2014/EwayAutomationMochaFramework.git'
-                )
+                echo 'Building the project...'
+                bat 'npm install'  // Example for Node.js projects
             }
         }
 
-        stage('Check Node.js Installation') {
+        stage('Test') {
             steps {
-                script {
-                    def nodeInstalled = bat(script: 'node -v', returnStatus: true) == 0
-                    if (!nodeInstalled) {
-                        error "Node.js is not installed or not found in PATH."
-                    }
-                }
-            }
-        }
-
-        stage('Install Dependencies') {
-            steps {
-                bat 'npm install'
-            }
-        }
-
-        stage('Run WebdriverIO Tests') {
-            steps {
-                bat 'npx wdio wdio.conf.ts'
+                echo 'Running Tests...'
+                bat 'npx wdio wdio.conf.ts'  // Example test command
             }
             post {
                 always {
                     archiveArtifacts artifacts: '**/reports/**/*', allowEmptyArchive: true
                 }
+            }
+        }
+
+        stage('Deploy') {
+            steps {
+                echo 'Deploying Application...'
             }
         }
     }
