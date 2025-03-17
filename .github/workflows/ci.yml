@@ -22,10 +22,11 @@ jobs:
     #     node-version: '14'
 
     - name: Install dependencies
-      run: npm install
+      run: bat 'npm install'  // Example for Node.js projects
+
 
     - name: Run tests
-      run: npx wdio wdio.conf.ts
+      run: bat 'npx wdio wdio.conf.ts'
 
     # - name: Archive test reports
     #   uses: actions/upload-artifact@v3.0.2
