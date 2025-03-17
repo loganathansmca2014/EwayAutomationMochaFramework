@@ -31,8 +31,8 @@ pipeline {
 
         stage('Run WebdriverIO Tests') {
             steps {
-                sh 'bat 'npx wdio wdio.conf.ts'
-'
+sh "bat 'npx wdio wdio.conf.ts'"
+
             }
             post {
                 always {
