@@ -141,7 +141,7 @@ export const config: WebdriverIO.Config = {
     // services: ['selenium-standalone'],
     //services: ['browserstack'], // Make sure BrowserStack service is included
     capabilities: [{
-        browserName: 'chrome',
+        browserName: 'edge',
         'bstack:options': {
             os: getBrowserStackOS(), // ✅ Fix OS Name
             osVersion: getBrowserStackOSVersion(), // ✅ Fix OS Version
