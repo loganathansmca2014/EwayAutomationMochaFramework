@@ -1,6 +1,9 @@
 pipeline {
     agent any
 
+    triggers {
+        githubPush()  // This enables webhook-based triggering
+    }
     environment {
         NODEJS_VERSION = '23.10.0'  // Change to match your project
     }
