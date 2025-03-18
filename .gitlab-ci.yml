@@ -29,20 +29,14 @@ test:
     - echo "Running tests..."
     - npm ci  # Ensure dependencies are installed before testing
     - npx wdio wdio.conf.ts
-  artifacts:
-    when: always
-    paths:
-      - '**/reports/**/*'
+  
 
 archive:
   stage: archive
   image: node:18
   script:
     - echo "Archiving test reports..."
-  artifacts:
-    when: always
-    paths:
-      - '**/reports/**/*'
+  
 
 notify:
   stage: notify
