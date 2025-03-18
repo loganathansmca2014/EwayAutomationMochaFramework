@@ -42,8 +42,3 @@ test:
       - allure-results  # Store raw Allure test results
     when: always
     expire_in: 7 days
-
-report:
-  stage: report
-  
-   
