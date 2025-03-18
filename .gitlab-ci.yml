@@ -1,35 +1,62 @@
-image: ubuntu:20.04  # Use a supported Ubuntu version
-
 stages:
-  - install
+  - build
   - test
+  - archive
+  - notify
 
-install_dependencies:
-  stage: install
-  script:
+variables:
+  NODE_VERSION: "18"
+  DEBIAN_FRONTEND: noninteractive  # Prevent interactive prompts
 
-   - export DEBIAN_FRONTEND=noninteractive
-  - apt-get update && apt-get install -y tzdata
-  - ln -fs /usr/share/zoneinfo/Asia/Dubai /etc/localtime  # Set the desired timezone
+before_script:
+  - apt-get update
+  - apt-get install -y wget gnupg2 curl tzdata
+  - ln -fs /usr/share/zoneinfo/Asia/Dubai /etc/localtime  # Set timezone to Dubai
   - dpkg-reconfigure -f noninteractive tzdata
-    - apt-get update && apt-get install -y curl wget gnupg2
-    # Add Microsoft's official GPG key
-    - curl -fsSL https://packages.microsoft.com/keys/microsoft.asc | gpg --dearmor | tee /usr/share/keyrings/microsoft.gpg > /dev/null
-    # Add Microsoft Edge repository
-    - echo "deb [signed-by=/usr/share/keyrings/microsoft.gpg] https://packages.microsoft.com/repos/edge stable main" | tee /etc/apt/sources.list.d/microsoft-edge.list
-    # Update and install Microsoft Edge Stable
-    - apt-get update && apt-get install -y microsoft-edge-stable
-    # Download and install EdgeDriver
-    - wget -q https://msedgedriver.azureedge.net/$(microsoft-edge --version | awk '{print $3}')/edgedriver_linux64.zip
-    - unzip edgedriver_linux64.zip -d /usr/local/bin/
-    - chmod +x /usr/local/bin/msedgedriver
-  only:
-    - master
+  - wget -q -O - https://packages.microsoft.com/keys/microsoft.asc | apt-key add -
+  - wget -q https://packages.microsoft.com/config/ubuntu/20.04/prod.list -O /etc/apt/sources.list.d/microsoft-prod.list
+  - apt-get update
+  - apt-get install -y microsoft-edge-stable
+  - npm ci  # Install dependencies efficiently
 
-run_tests:
-  stage: test
+build:
+  stage: build
+  image: node:18
   script:
-    - npm install
-    - npm test  # Replace with your actual WebdriverIO command
-  only:
-    - master
+    - echo "Building project..."
+
+test:
+  stage: test
+  image: node:18
+  script:
+    - echo "Running tests..."
+    - npm ci  # Ensure dependencies are installed before testing
+    - npx wdio wdio.conf.ts
+  artifacts:
+    when: always
+    paths:
+      - '**/reports/**/*'
+
+archive:
+  stage: archive
+  image: node:18
+  script:
+    - echo "Archiving test reports..."
+  artifacts:
+    when: always
+    paths:
+      - '**/reports/**/*'
+
+notify:
+  stage: notify
+  image: node:18
+  script:
+    - echo "Sending email notification..."
+    - |
+      if [ "$CI_JOB_STATUS" == "success" ]; then
+        curl --url 'smtp://smtp.gmail.com:587' --ssl-reqd \
+          --mail-from "$SMTP_USER" \
+          --mail-rcpt "$NOTIFY_EMAIL" \
+          --user "$SMTP_USER:$SMTP_PASS" \
+          -T <(echo -e "Subject: Build Success\n\nThe build was successful!")
+      fi
