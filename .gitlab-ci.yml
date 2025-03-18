@@ -8,13 +8,13 @@ stages:
   - notify
 
 before_script:
-  - apt-get update && apt-get install -y wget gnupg2 curl
-  # Add Google Chrome repository and install
+  - apt-get update
+  - apt-get install -y wget gnupg2 curl
+  # Add Google Chrome repository and key
   - wget -q -O - https://dl.google.com/linux/linux_signing_key.pub | apt-key add -
   - echo "deb [arch=amd64] https://dl.google.com/linux/chrome/deb/ stable main" | tee /etc/apt/sources.list.d/google-chrome.list
-  - apt-get update && apt-get install -y google-chrome-stable --no-install-recommends
-  - google-chrome --version
-  # Install dependencies
+  - apt-get update
+  - apt-get install -y google-chrome-stable
   - npm install
   - npm install --save-dev chromedriver allure-commandline
 
@@ -23,7 +23,6 @@ build:
   script:
     - echo "Checkout code"
     - git checkout master
-    - npm run build  # Assuming this generates a build
   artifacts:
     paths:
       - dist/  # Save the build output for later stages
