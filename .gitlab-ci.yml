@@ -8,6 +8,12 @@ variables:
   NODE_VERSION: "18"
 
 before_script:
+  - apt-get update
+  - apt-get install -y wget gnupg
+  - wget -q -O - https://packages.microsoft.com/keys/microsoft.asc | apt-key add -
+  - wget -q https://packages.microsoft.com/config/debian/10/prod.list -O /etc/apt/sources.list.d/microsoft-prod.list
+  - apt-get update
+  - apt-get install -y microsoft-edge-stable
   - npm install
 
 build:
@@ -46,7 +52,7 @@ notify:
       if [ "$CI_JOB_STATUS" == "success" ]; then
         curl --url 'smtp://smtp.gmail.com:587' --ssl-reqd \
           --mail-from 'loganathansmca2014@gmail.com' \
-          --mail-rcpt 'loganathansmca2014@gmail.com' \
+          --mail-rcpt 'logumca2011@gmail.com' \
           --user 'loganathansmca2014@gmail.com:India@12354' \
           -T <(echo -e "Subject: Build Success\n\nThe build was successful!")
       fi
