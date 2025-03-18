@@ -25,7 +25,7 @@ build:
     - git checkout master
   artifacts:
     paths:
-      - dist/
+      - dist
     expire_in: 1 day
 
 test:
@@ -37,9 +37,9 @@ test:
     CHROME_BIN: "/usr/bin/google-chrome"
   artifacts:
     paths:
-      - reports/
-      - screenshots/
-      - allure-results/  # Store raw Allure test results
+      - reports
+      - screenshots
+      - allure-results  # Store raw Allure test results
     when: always
     expire_in: 7 days
 
@@ -56,6 +56,6 @@ report:
       fi
   artifacts:
     paths:
-      - allure-report/  # Store the generated Allure report
+      - allure-report # Store the generated Allure report
     when: always
     expire_in: 14 days
