@@ -9,9 +9,9 @@ variables:
 
 before_script:
   - apt-get update
-  - apt-get install -y wget gnupg
+  - apt-get install -y wget gnupg2
   - wget -q -O - https://packages.microsoft.com/keys/microsoft.asc | apt-key add -
-  - wget -q https://packages.microsoft.com/config/debian/10/prod.list -O /etc/apt/sources.list.d/microsoft-prod.list
+  - wget -q https://packages.microsoft.com/config/ubuntu/20.04/prod.list -O /etc/apt/sources.list.d/microsoft-prod.list
   - apt-get update
   - apt-get install -y microsoft-edge-stable
   - npm install
