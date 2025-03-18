@@ -81,12 +81,12 @@ export const config: WebdriverIO.Config = {
     //
     // Define the capabilities (we are setting Chrome as the browser)
 
-    capabilities: [{
-        browserName: 'chrome',
-        'goog:chromeOptions': {
-          args: ['--no-sandbox', '--disable-dev-shm-usage'],
-        }
-      }],
+    // capabilities: [{
+    //     browserName: 'chrome',
+    //     'goog:chromeOptions': {
+    //       args: ['--no-sandbox', '--disable-dev-shm-usage'],
+    //     }
+    //   }],
     //
     // ===================
     // Test Configurations
@@ -140,30 +140,30 @@ export const config: WebdriverIO.Config = {
     // commands. Instead, they hook themselves up into the test process.
     // services: ['selenium-standalone'],
     //services: ['browserstack'], // Make sure BrowserStack service is included
-    // capabilities: [{
-    //     browserName: 'chrome', // Edge browser name
-    //     // 'bstack:options': {
-    //     //     os: getBrowserStackOS(), // Function to get OS (e.g., Windows, macOS)
-    //     //     osVersion: getBrowserStackOSVersion(), // Function to get OS version (e.g., 10, 11)
-    //     //     projectName: 'WebDriverIO BrowserStack Optimization',
-    //     //     buildName: 'Optimized Test Build',
-    //     //     sessionName: `Web Automation Test - ${new Date().toISOString()}`,
-    //     //     seleniumVersion: '4.8.0',
-    //     //     networkLogs: true,
-    //     //     debug: true,
-    //     //     userName: process.env.BROWSERSTACK_USERNAME, // BrowserStack username
-    //     //     accessKey: process.env.BROWSERSTACK_ACCESS_KEY, // BrowserStack access key
-    //     // },
-    //     // // Edge-specific options for headless mode
-    //     // 'ms:edgeOptions': {
-    //     //     args: [
-    //     //          '--headless',           // Run in headless mode (no GUI)
-    //     //         '--disable-gpu',        // Disable GPU acceleration (important in headless mode)
-    //     //         '--no-sandbox',         // Ensure compatibility with certain environments
-    //     //         '--disable-software-rasterizer',  // Disable software rasterizer to avoid issues in headless mode
-    //     //     ]
-    //     // }
-    // }], // Set true if testing a local app
+    capabilities: [{
+        browserName: 'chrome', // Edge browser name
+        'bstack:options': {
+            os: getBrowserStackOS(), // Function to get OS (e.g., Windows, macOS)
+            osVersion: getBrowserStackOSVersion(), // Function to get OS version (e.g., 10, 11)
+            projectName: 'WebDriverIO BrowserStack Optimization',
+            buildName: 'Optimized Test Build',
+            sessionName: `Web Automation Test - ${new Date().toISOString()}`,
+            seleniumVersion: '4.8.0',
+            networkLogs: true,
+            debug: true,
+            userName: process.env.BROWSERSTACK_USERNAME, // BrowserStack username
+            accessKey: process.env.BROWSERSTACK_ACCESS_KEY, // BrowserStack access key
+        },
+        // Edge-specific options for headless mode
+        'ms:edgeOptions': {
+            args: [
+                 '--headless',           // Run in headless mode (no GUI)
+                '--disable-gpu',        // Disable GPU acceleration (important in headless mode)
+                '--no-sandbox',         // Ensure compatibility with certain environments
+                '--disable-software-rasterizer',  // Disable software rasterizer to avoid issues in headless mode
+            ]
+        }
+    }], // Set true if testing a local app
 
 
 
