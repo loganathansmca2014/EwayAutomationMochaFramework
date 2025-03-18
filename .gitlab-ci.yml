@@ -45,17 +45,5 @@ test:
 
 report:
   stage: report
-  script:
-    - echo "Generate Allure report"
-    - ls -la allure-results  # Debug: Check if the folder exists
-    - mkdir -p allure-results  # Ensure the directory exists
-    - if [ -d "allure-results" ] && [ "$(ls -A allure-results)" ]; then
-        allure generate allure-results --clean -o allure-report;
-      else
-        echo "No Allure results found, skipping report generation.";
-      fi
-  artifacts:
-    paths:
-      - allure-report # Store the generated Allure report
-    when: always
-    expire_in: 14 days
+  
+   
