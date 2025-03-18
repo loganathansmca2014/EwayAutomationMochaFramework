@@ -27,21 +27,10 @@ jobs:
     - name: Run tests
       run: npx wdio wdio.conf.ts
 
-    - name: Archive test reports
+     name: Archive test reports
       if: always()
       uses: actions/upload-artifact@v4.6.1
       with:
         name: test-reports
         path: '**/reports/**/*'
-    - name: Send email notification
-      if: success()
-      uses: dawidd6/action-send-mail@v4
-      with:
-        server_address: smtp.gmail.com
-        server_port: 587
-        username: loganathansmca2014@gmail.com
-        password: India@12354
-        subject: Build Success
-        to: loganathansmca2014@gmail.com
-        from: loganathansmca2014@gmail.com
-        body: The build was successful!
+    

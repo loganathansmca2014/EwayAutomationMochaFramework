@@ -11,11 +11,14 @@ import Globalfunction from '../utils/globalFunction';
 import ewayLandingPage from '../pageobjects/ewayLandingPage';
 import { expect } from '@wdio/globals';
 import { fa, faker } from "@faker-js/faker";
+import Eway from '../specs/practices';
+import practices from '../specs/practices';
 
 describe("Feature :Customer OnBoard Page", () => {
 
     beforeEach('Before each Test', async () => {
         logger.info("Opening browser...");
+       // await Eway.ewayLoginAuth(practices.getEnvironmentConfig().envName )
         await EwayLoginPage.launchApplication('./');
     });
 
