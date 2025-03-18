@@ -6,8 +6,15 @@ stages:
 
 
 before_script:
-  - apt-get update && apt-get install -y google-chrome-stable
+  - apt-get update
+  - apt-get install -y wget gnupg2 curl
+  # Add Google Chrome repository and key
+  - wget -q -O - https://dl.google.com/linux/linux_signing_key.pub | apt-key add -
+  - echo "deb [arch=amd64] https://dl.google.com/linux/chrome/deb/ stable main" | tee /etc/apt/sources.list.d/google-chrome.list
+  - apt-get update
+  - apt-get install -y google-chrome-stable
   - npm install
+
 
 build:
   stage: build
