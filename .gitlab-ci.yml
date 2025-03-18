@@ -7,6 +7,7 @@ stages:
 variables:
   NODE_VERSION: "18"
   DEBIAN_FRONTEND: noninteractive  # Prevent interactive prompts
+
 before_script:
   - apt-get update && apt-get install -y wget gnupg2
   - wget -q -O - https://packages.microsoft.com/keys/microsoft.asc | gpg --dearmor > microsoft.gpg
@@ -28,15 +29,17 @@ test:
   script:
     - echo "Running tests..."
     - npm ci  # Ensure dependencies are installed before testing
-    - npx wdio wdio.conf.ts
-  
+    - npx wdio run wdio.conf.ts --user-data-dir=/tmp/unique-user-data-dir-$(date +%s)
 
 archive:
   stage: archive
   image: node:18
   script:
     - echo "Archiving test reports..."
-  
+  artifacts:
+    when: always
+    paths:
+      - '**/reports/**/*'
 
 notify:
   stage: notify
