@@ -1,7 +1,6 @@
 {
     "compilerOptions": {
         "moduleResolution": "node",
-        
         "module": "ESNext",
         "target": "es2022",
         "lib": [
@@ -24,12 +23,12 @@
         "noUnusedLocals": true,
         "noUnusedParameters": true,
         "esModuleInterop": true,
-
         "noFallthroughCasesInSwitch": true
     },
     "include": [
         "wdio.conf.ts"
-        
     ],
-    "exclude": ["node_modules"]
+    "exclude": [
+        "node_modules"
+    ]
 }
