@@ -3,6 +3,7 @@ image: node:18  # Global image definition
 stages:
   - build
   - test
+  - report
   - archive
   - notify
 
@@ -15,13 +16,18 @@ before_script:
   - google-chrome --version
   # Install dependencies
   - npm install
-  - npm install --save-dev chromedriver
+  - npm install --save-dev chromedriver allure-commandline
 
 build:
   stage: build
   script:
     - echo "Checkout code"
     - git checkout master
+    - npm run build  # Assuming this generates a build
+  artifacts:
+    paths:
+      - dist/  # Save the build output for later stages
+    expire_in: 1 day
 
 test:
   stage: test
@@ -30,3 +36,33 @@ test:
     - npx wdio run wdio.conf.ts
   variables:
     CHROME_BIN: "/usr/bin/google-chrome"
+  artifacts:
+    paths:
+      - reports/  # Store WebdriverIO test reports
+      - screenshots/  # Store failure screenshots
+      - allure-results/  # Store raw Allure test results
+    when: always
+    expire_in: 7 days
+
+report:
+  stage: report
+  script:
+    - echo "Generate Allure report"
+    - npm install --save-dev allure-commandline
+    - allure generate allure-results --clean -o allure-report
+  artifacts:
+    paths:
+      - allure-report/  # Store the generated Allure report
+    when: always
+    expire_in: 14 days
+
+archive:
+  stage: archive
+  script:
+    - echo "Archiving artifacts"
+  dependencies:
+    - build
+  artifacts:
+    paths:
+      - dist/  # Archive the final build output
+    expire_in: 30 days
