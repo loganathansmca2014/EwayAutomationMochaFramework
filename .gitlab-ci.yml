@@ -7,17 +7,14 @@ stages:
 variables:
   NODE_VERSION: "18"
   DEBIAN_FRONTEND: noninteractive  # Prevent interactive prompts
-
 before_script:
-  - apt-get update
-  - apt-get install -y wget gnupg2 curl tzdata
-  - ln -fs /usr/share/zoneinfo/Asia/Dubai /etc/localtime  # Set timezone to Dubai
-  - dpkg-reconfigure -f noninteractive tzdata
-  - wget -q -O - https://packages.microsoft.com/keys/microsoft.asc | apt-key add -
-  - wget -q https://packages.microsoft.com/config/ubuntu/20.04/prod.list -O /etc/apt/sources.list.d/microsoft-prod.list
+  - apt-get update && apt-get install -y wget gnupg2
+  - wget -q -O - https://packages.microsoft.com/keys/microsoft.asc | gpg --dearmor > microsoft.gpg
+  - mv microsoft.gpg /etc/apt/trusted.gpg.d/microsoft.gpg
+  - sh -c 'echo "deb [arch=amd64] https://packages.microsoft.com/repos/edge stable main" > /etc/apt/sources.list.d/microsoft-edge.list'
   - apt-get update
   - apt-get install -y microsoft-edge-stable
-  - npm ci  # Install dependencies efficiently
+  - npm install
 
 build:
   stage: build
