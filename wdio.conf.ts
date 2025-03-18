@@ -120,8 +120,8 @@ export const config: WebdriverIO.Config = {
     // If your `url` parameter starts without a scheme or `/` (like `some/path`), the base url
     // gets prepended directly.
     baseUrl: process.env.BASE_URL || 'http://default-url.com', // ✅ Use env variable
-    
-   
+
+
     //
     // Default timeout for all waitFor* commands.
 
@@ -143,23 +143,25 @@ export const config: WebdriverIO.Config = {
     capabilities: [{
         browserName: 'edge', // Edge browser name
         'bstack:options': {
-          
+
             projectName: 'WebDriverIO BrowserStack Optimization',
             buildName: 'Optimized Test Build',
             sessionName: `Web Automation Test - ${new Date().toISOString()}`,
             seleniumVersion: '4.8.0',
             networkLogs: true,
             debug: true,
-           // userName: process.env.BROWSERSTACK_USERNAME, // BrowserStack username
+            // userName: process.env.BROWSERSTACK_USERNAME, // BrowserStack username
             //accessKey: process.env.BROWSERSTACK_ACCESS_KEY, // BrowserStack access key
         },
         // Edge-specific options for headless mode
         'ms:edgeOptions': {
             args: [
-                 //'--headless',           // Run in headless mode (no GUI)
+                //'--headless',           // Run in headless mode (no GUI)
                 '--disable-gpu',        // Disable GPU acceleration (important in headless mode)
                 '--no-sandbox',         // Ensure compatibility with certain environments
                 '--disable-software-rasterizer',  // Disable software rasterizer to avoid issues in headless mode
+                `--user-data-dir=/tmp/msedge-user-${Date.now()}`
+
             ]
         }
     }], // Set true if testing a local app
@@ -290,11 +292,11 @@ export const config: WebdriverIO.Config = {
             return;
         }
 
-       // await browser.execute('browserstack_executor: {"action": "annotate", "arguments": {"data": "Test Completed"}}');
+        // await browser.execute('browserstack_executor: {"action": "annotate", "arguments": {"data": "Test Completed"}}');
     },
 
-    
-    
+
+
     /**
      * Gets executed before test execution begins. At this point you can access to all global
      * variables like `browser`. It is the perfect place to define custom commands.
