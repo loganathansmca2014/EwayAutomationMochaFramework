@@ -1,31 +1,32 @@
+image: node:18  # Global image definition
+
 stages:
   - build
   - test
   - archive
   - notify
 
-
 before_script:
-  - apt-get update
-  - apt-get install -y wget gnupg2 curl
-  # Add Google Chrome repository and key
+  - apt-get update && apt-get install -y wget gnupg2 curl
+  # Add Google Chrome repository and install
   - wget -q -O - https://dl.google.com/linux/linux_signing_key.pub | apt-key add -
   - echo "deb [arch=amd64] https://dl.google.com/linux/chrome/deb/ stable main" | tee /etc/apt/sources.list.d/google-chrome.list
-  - apt-get update
-  - apt-get install -y google-chrome-stable
+  - apt-get update && apt-get install -y google-chrome-stable --no-install-recommends
+  - google-chrome --version
+  # Install dependencies
   - npm install
-
+  - npm install --save-dev chromedriver
 
 build:
   stage: build
-  image: node:18
   script:
     - echo "Checkout code"
     - git checkout master
 
 test:
   stage: test
-  image: node:18
   script:
     - echo "Run tests"
     - npx wdio run wdio.conf.ts
+  variables:
+    CHROME_BIN: "/usr/bin/google-chrome"
