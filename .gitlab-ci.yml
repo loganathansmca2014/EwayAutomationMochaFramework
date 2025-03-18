@@ -6,39 +6,35 @@ stages:
 
 variables:
   NODE_VERSION: "18"
-  DEBIAN_FRONTEND: noninteractive  # Prevent interactive prompts
+
 before_script:
-  - apt-get update && apt-get install -y wget gnupg2
-  - wget -q -O - https://packages.microsoft.com/keys/microsoft.asc | gpg --dearmor > microsoft.gpg
-  - mv microsoft.gpg /etc/apt/trusted.gpg.d/microsoft.gpg
-  - sh -c 'echo "deb [arch=amd64] https://packages.microsoft.com/repos/edge stable main" > /etc/apt/sources.list.d/microsoft-edge.list'
-  - apt-get update
-  - apt-get install -y microsoft-edge-stable
+  - echo "Setting up environment"
+  - choco install microsoft-edge -y
+  - choco install git -y
   - npm install
 
 build:
   stage: build
-  image: node:18
+  image: mcr.microsoft.com/windows/servercore:ltsc2022
   script:
-    - echo "Building project..."
+    - echo "Checkout code"
+    - git checkout master
 
 test:
   stage: test
-  image: node:18
+  image: mcr.microsoft.com/windows/servercore:ltsc2022
   script:
-    - echo "Running tests..."
-    - npm ci  # Ensure dependencies are installed before testing
+    - echo "Run tests"
     - npx wdio wdio.conf.ts
   artifacts:
-    when: always
     paths:
       - '**/reports/**/*'
 
 archive:
   stage: archive
-  image: node:18
+  image: mcr.microsoft.com/windows/servercore:ltsc2022
   script:
-    - echo "Archiving test reports..."
+    - echo "Archive test reports"
   artifacts:
     when: always
     paths:
@@ -46,14 +42,14 @@ archive:
 
 notify:
   stage: notify
-  image: node:18
+  image: mcr.microsoft.com/windows/servercore:ltsc2022
   script:
-    - echo "Sending email notification..."
+    - echo "Send email notification"
     - |
-      if [ "$CI_JOB_STATUS" == "success" ]; then
-        curl --url 'smtp://smtp.gmail.com:587' --ssl-reqd \
-          --mail-from "$SMTP_USER" \
-          --mail-rcpt "$NOTIFY_EMAIL" \
-          --user "$SMTP_USER:$SMTP_PASS" \
-          -T <(echo -e "Subject: Build Success\n\nThe build was successful!")
-      fi
+      if ($env:CI_JOB_STATUS -eq "success") {
+        curl --url 'smtp://smtp.gmail.com:587' --ssl-reqd `
+          --mail-from 'loganathansmca2014@gmail.com' `
+          --mail-rcpt 'logumca2011@gmail.com' `
+          --user 'loganathansmca2014@gmail.com:India@12354' `
+          -T ([System.Text.Encoding]::UTF8.GetBytes("Subject: Build Success\n\nThe build was successful!"))
+      }
