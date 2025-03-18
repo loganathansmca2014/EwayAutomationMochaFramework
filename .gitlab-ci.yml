@@ -1,3 +1,5 @@
+image: node:18  # Use Node.js image that includes npm
+
 stages:
   - build
   - test
@@ -8,6 +10,8 @@ variables:
   NODE_VERSION: "18"
 
 before_script:
+  - node -v
+  - npm -v
   - npm install
 
 build:
@@ -44,5 +48,4 @@ notify:
           --mail-from 'loganathansmca2014@gmail.com' \
           --mail-rcpt 'loganathansmca2014@gmail.com' \
           --user 'loganathansmca2014@gmail.com:India@12354' \
-          -T <(echo -e "Subject: Build Success\n\nThe build was successful!")
-      fi
+          -T <(echo -e "Subject: Build Success\n\nThe 
