@@ -1,0 +1,48 @@
+stages:
+  - build
+  - test
+  - archive
+  - notify
+
+variables:
+  NODE_VERSION: "18"
+
+before_script:
+  - npm install
+
+build:
+  stage: build
+  script:
+    - echo "Checkout code"
+    - git checkout master
+
+test:
+  stage: test
+  script:
+    - echo "Run tests"
+    - npx wdio wdio.conf.ts
+  artifacts:
+    paths:
+      - '**/reports/**/*'
+
+archive:
+  stage: archive
+  script:
+    - echo "Archive test reports"
+  artifacts:
+    when: always
+    paths:
+      - '**/reports/**/*'
+
+notify:
+  stage: notify
+  script:
+    - echo "Send email notification"
+    - |
+      if [ "$CI_JOB_STATUS" == "success" ]; then
+        curl --url 'smtp://smtp.gmail.com:587' --ssl-reqd \
+          --mail-from 'loganathansmca2014@gmail.com' \
+          --mail-rcpt 'loganathansmca2014@gmail.com' \
+          --user 'loganathansmca2014@gmail.com:India@12354' \
+          -T <(echo -e "Subject: Build Success\n\nThe build was successful!")
+      

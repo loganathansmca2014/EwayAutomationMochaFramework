@@ -12,12 +12,14 @@ before_script:
 
 build:
   stage: build
+  image: node:18
   script:
     - echo "Checkout code"
     - git checkout master
 
 test:
   stage: test
+  image: node:18
   script:
     - echo "Run tests"
     - npx wdio wdio.conf.ts
@@ -27,6 +29,7 @@ test:
 
 archive:
   stage: archive
+  image: node:18
   script:
     - echo "Archive test reports"
   artifacts:
@@ -36,6 +39,7 @@ archive:
 
 notify:
   stage: notify
+  image: node:18
   script:
     - echo "Send email notification"
     - |
