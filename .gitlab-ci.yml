@@ -6,13 +6,12 @@ stages:
 
 variables:
   NODE_VERSION: "18"
-  DEBIAN_FRONTEND: noninteractive  # Prevent interactive prompts
 
 before_script:
-  - apt-get update && apt-get install -y wget gnupg2
-  - wget -q -O - https://packages.microsoft.com/keys/microsoft.asc | gpg --dearmor > microsoft.gpg
-  - mv microsoft.gpg /etc/apt/trusted.gpg.d/microsoft.gpg
-  - sh -c 'echo "deb [arch=amd64] https://packages.microsoft.com/repos/edge stable main" > /etc/apt/sources.list.d/microsoft-edge.list'
+  - apt-get update
+  - apt-get install -y wget gnupg2
+  - wget -q -O - https://packages.microsoft.com/keys/microsoft.asc | apt-key add -
+  - wget -q https://packages.microsoft.com/config/ubuntu/20.04/prod.list -O /etc/apt/sources.list.d/microsoft-prod.list
   - apt-get update
   - apt-get install -y microsoft-edge-stable
   - npm install
@@ -21,21 +20,24 @@ build:
   stage: build
   image: node:18
   script:
-    - echo "Building project..."
+    - echo "Checkout code"
+    - git checkout master
 
 test:
   stage: test
   image: node:18
   script:
-    - echo "Running tests..."
-    - npm ci  # Ensure dependencies are installed before testing
-    - npx wdio run wdio.conf.ts --user-data-dir=/tmp/unique-user-data-dir-$(date +%s)
+    - echo "Run tests"
+    - npx wdio wdio.conf.ts
+  artifacts:
+    paths:
+      - '**/reports/**/*'
 
 archive:
   stage: archive
   image: node:18
   script:
-    - echo "Archiving test reports..."
+    - echo "Archive test reports"
   artifacts:
     when: always
     paths:
@@ -45,12 +47,12 @@ notify:
   stage: notify
   image: node:18
   script:
-    - echo "Sending email notification..."
+    - echo "Send email notification"
     - |
       if [ "$CI_JOB_STATUS" == "success" ]; then
         curl --url 'smtp://smtp.gmail.com:587' --ssl-reqd \
-          --mail-from "$SMTP_USER" \
-          --mail-rcpt "$NOTIFY_EMAIL" \
-          --user "$SMTP_USER:$SMTP_PASS" \
+          --mail-from 'loganathansmca2014@gmail.com' \
+          --mail-rcpt 'logumca2011@gmail.com' \
+          --user 'loganathansmca2014@gmail.com:India@12354' \
           -T <(echo -e "Subject: Build Success\n\nThe build was successful!")
       fi
