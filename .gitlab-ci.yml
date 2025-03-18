@@ -7,6 +7,11 @@ stages:
 install_dependencies:
   stage: install
   script:
+
+   - export DEBIAN_FRONTEND=noninteractive
+  - apt-get update && apt-get install -y tzdata
+  - ln -fs /usr/share/zoneinfo/Asia/Dubai /etc/localtime  # Set the desired timezone
+  - dpkg-reconfigure -f noninteractive tzdata
     - apt-get update && apt-get install -y curl wget gnupg2
     # Add Microsoft's official GPG key
     - curl -fsSL https://packages.microsoft.com/keys/microsoft.asc | gpg --dearmor | tee /usr/share/keyrings/microsoft.gpg > /dev/null
