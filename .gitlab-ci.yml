@@ -29,7 +29,7 @@ test:
   image: node:18
   script:
     - echo "Run tests"
-    - npx wdio run wdio.conf.ts --user-data-dir=/tmp/unique-user-data-dir-$(date +%s)
+    - npx wdio run wdio.conf.ts --user-data-dir=/tmp/unique-user-data-dir-$(date +%s%N)
   artifacts:
     paths:
       - '**/reports/**/*'
