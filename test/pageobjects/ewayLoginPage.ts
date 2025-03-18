@@ -1,5 +1,6 @@
 import BrowserNaviGate from '../pageobjects/navComponents/browserNav';
 import logger from '../utils/logger'; // Import logger
+import { browser } from '@wdio/globals'; // Import browser
 
 class EwayLoginPage {
     
@@ -47,7 +48,7 @@ class EwayLoginPage {
     }
     
     async ewayLoginAuth(username: string, password: string) {
-        await browser.getTitle(); // Fixed incorrect usage of title retrieval
+        const title = await browser.getTitle(); // Fixed incorrect usage of title retrieval
         await this.ewayUserNameInput.setValue(username);
         await this.ewayPasswordInput.setValue(password);
         await this.ewayLoginBtn.click();

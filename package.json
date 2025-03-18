@@ -26,6 +26,8 @@
     "allure:open": "npx allure open allure-report"
   },
   "dependencies": {
+    "@types/chai": "^5.2.0",
+    "chai": "^5.2.0",
     "dotenv": "^16.4.7",
     "node": "^20.19.0",
     "npx": "^10.2.2"

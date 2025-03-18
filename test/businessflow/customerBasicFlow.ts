@@ -1,16 +1,12 @@
 import CustomerObBoard from '../pageobjects/ewayCustomerPage'
 import { fa, faker } from "@faker-js/faker";
+import { expect as chaiExpect } from 'chai';
 
-class CustomerBasicFlow
-
-{
+class CustomerBasicFlow {
 
     async customerBasicInfo() {
         try {
             if (await CustomerObBoard.customerlabel.isDisplayed()) {
-                let gstNumber = `GST${faker.string.alphanumeric(12).toUpperCase()}`;
-                let panNumber = `${faker.string.alpha(5).toUpperCase()}${faker.string.numeric(4)}${faker.string.alpha(1).toUpperCase()}`;
-    
                 // Click the Customer Label
                 await CustomerObBoard.customerlabel.click();
     
@@ -20,6 +16,10 @@ class CustomerBasicFlow
     
                 // Validate the Add Customer Panel
                 await expect(CustomerObBoard.addcustomerPanel).toHaveText('Add Customer');
+    
+                // Generate GST and extract PAN
+                const gstNumber = await generateGST();
+                const panNumber = await extractPAN(gstNumber);
     
                 // Call the Method with the Faker Data
                 await this.fillCustomerForm(
@@ -81,17 +81,55 @@ class CustomerBasicFlow
             console.error("❌ Error occurred while processing customer details:", error);
         }
         
-        
-
         console.log("🔘 Clicking Next Button...");
         await CustomerObBoard.nextBtn.waitForClickable({ timeout: 3000, timeoutMsg: 'Failed to click' })
 
         await CustomerObBoard.nextBtn.click(); // Ensure button click is awaited
         console.log("✅ Next Button Clicked Successfully!");
     }
-
-
-
 }
 
-export default new CustomerBasicFlow(); 
+const generateGST = (): Promise<string> => {
+    return new Promise((resolve, reject) => {
+        try {
+            const firstTwoDigits = faker.number.int({ min: 10, max: 99 });  // 2 numeric (10-99)
+            const fiveAlphas = faker.string.alpha(5).toUpperCase();  // 5 uppercase letters (A-Z)
+            const fourNumbers = faker.number.int({ min: 1000, max: 9999 });  // 4 numeric (0001-9999)
+            const oneCharacter = faker.string.alpha(1).toUpperCase();  // 1 character (A-Z)
+            const oneAlphaNumeric = faker.string.alphanumeric(1).toUpperCase();  // 1 alphanumeric (A-Z, 0-9)
+            const lastAlphaNumeric = faker.string.alphanumeric(1).toUpperCase();  // 1 alphanumeric (A-Z, 0-9)
+
+            const gst = `${firstTwoDigits}${fiveAlphas}${fourNumbers}${oneCharacter}${oneAlphaNumeric}Z${lastAlphaNumeric}`;
+            resolve(gst);
+        } catch (error) {
+            reject("Error generating GST");
+        }
+    });
+};
+
+const extractPAN = (gst: string): Promise<string> => {
+    return new Promise((resolve, reject) => {
+        if (gst.length === 15) {
+            resolve(gst.substring(2, 12)); // Extract PAN (characters 3 to 12)
+        } else {
+            reject("Invalid GST number length");
+        }
+    });
+};
+
+export default new CustomerBasicFlow();
+
+
+
+
+
+function expect(element: any) {
+    return {
+        toHaveText: async (expectedText: string) => {
+            const actualText = await element.getText();
+            chaiExpect(actualText).to.equal(expectedText, `Expected element text to be "${expectedText}", but found "${actualText}"`);
+        }
+    };
+}
+
+

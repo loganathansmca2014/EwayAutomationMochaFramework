@@ -43,7 +43,7 @@ describe("Feature :Customer OnBoard Page", () => {
         console.log(mobileNumber);
         const faxNumber = `+1-${faker.string.numeric(3)}-${faker.string.numeric(3)}-${faker.string.numeric(4)}`;
         console.log(`Fax: ${faxNumber}`);
-        await EwayCustomerContactFlow.addCustomerContactdata(faker.person.fullName(), faker.person.jobTitle(), mobileNumber, 'test@test.com', mobileNumber, faxNumber)
+        await EwayCustomerContactFlow.addCustomerContactdata(faker.person.firstName(), faker.person.jobTitle(), mobileNumber, 'test@test.com', mobileNumber, faxNumber)
 
 
 

@@ -8,7 +8,7 @@ class EwayCustomerAddressflow
 async ewaycutomerAddressInfo()
 {
   const mobileNumber = faker.string.numeric(10);
-  await this.customerAddressInputForm(faker.person.firstName(), faker.location.streetAddress(), faker.location.secondaryAddress(), faker.location.zipCode())
+  await this.customerAddressInputForm(faker.person.fullName(), faker.location.streetAddress(), faker.location.secondaryAddress(), faker.location.zipCode())
             
 
 }
