@@ -8,15 +8,16 @@ stages:
   - notify
 
 before_script:
-  - apt-get update
-  - apt-get install -y wget gnupg2 curl
-  # Add Google Chrome repository and key
+  - apt-get update && apt-get install -y wget gnupg2 curl
+  # Add Google Chrome repository and install
   - wget -q -O - https://dl.google.com/linux/linux_signing_key.pub | apt-key add -
   - echo "deb [arch=amd64] https://dl.google.com/linux/chrome/deb/ stable main" | tee /etc/apt/sources.list.d/google-chrome.list
-  - apt-get update
-  - apt-get install -y google-chrome-stable
+  - apt-get update && apt-get install -y google-chrome-stable --no-install-recommends
+  - google-chrome --version
+  # Install dependencies
   - npm install
-  - npm install --save-dev chromedriver allure-commandline
+  - npm install -g allure-commandline  # Install Allure globally
+  - allure --version  # Check if Allure is installed correctly
 
 build:
   stage: build
@@ -25,7 +26,7 @@ build:
     - git checkout master
   artifacts:
     paths:
-      - dist/  # Save the build output for later stages
+      - dist/
     expire_in: 1 day
 
 test:
@@ -37,8 +38,8 @@ test:
     CHROME_BIN: "/usr/bin/google-chrome"
   artifacts:
     paths:
-      - reports/  # Store WebdriverIO test reports
-      - screenshots/  # Store failure screenshots
+      - reports/
+      - screenshots/
       - allure-results/  # Store raw Allure test results
     when: always
     expire_in: 7 days
@@ -47,21 +48,11 @@ report:
   stage: report
   script:
     - echo "Generate Allure report"
-    - npm install --save-dev allure-commandline
+    - ls -la allure-results  # Debug: Check if the folder exists
+    - mkdir -p allure-results  # Ensure the directory exists
     - allure generate allure-results --clean -o allure-report
   artifacts:
     paths:
       - allure-report/  # Store the generated Allure report
     when: always
     expire_in: 14 days
-
-archive:
-  stage: archive
-  script:
-    - echo "Archiving artifacts"
-  dependencies:
-    - build
-  artifacts:
-    paths:
-      - dist/  # Archive the final build output
-    expire_in: 30 days
