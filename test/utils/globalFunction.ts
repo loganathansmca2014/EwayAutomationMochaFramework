@@ -1,10 +1,11 @@
 import allureReporter from '@wdio/allure-reporter';
 import { fa, faker } from "@faker-js/faker";
+import { promises } from 'dns';
 
 class Globalfunction
 {
     
-async highlightElement(element:any) {
+async highlightElement(element:any):prom<void> {
     await browser.execute("arguments[0].style.border='3px solid yellow'", await element);
 }
 async takeScreenshot()

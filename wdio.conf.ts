@@ -157,7 +157,7 @@ export const config: WebdriverIO.Config = {
         // Edge-specific options for headless mode
         'ms:edgeOptions': {
             args: [
-                 '--headless',           // Run in headless mode (no GUI)
+                 //'--headless',           // Run in headless mode (no GUI)
                 '--disable-gpu',        // Disable GPU acceleration (important in headless mode)
                 '--no-sandbox',         // Ensure compatibility with certain environments
                 '--disable-software-rasterizer',  // Disable software rasterizer to avoid issues in headless mode
