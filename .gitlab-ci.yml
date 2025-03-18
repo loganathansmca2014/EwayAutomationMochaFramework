@@ -8,21 +8,16 @@ variables:
   NODE_VERSION: "18"
 
 before_script:
-  - echo "Setting up environment"
-  - choco install microsoft-edge -y
-  - choco install git -y
   - npm install
 
 build:
   stage: build
-  image: mcr.microsoft.com/windows/servercore:ltsc2022
   script:
     - echo "Checkout code"
     - git checkout master
 
 test:
   stage: test
-  image: mcr.microsoft.com/windows/servercore:ltsc2022
   script:
     - echo "Run tests"
     - npx wdio wdio.conf.ts
@@ -32,7 +27,6 @@ test:
 
 archive:
   stage: archive
-  image: mcr.microsoft.com/windows/servercore:ltsc2022
   script:
     - echo "Archive test reports"
   artifacts:
@@ -42,14 +36,13 @@ archive:
 
 notify:
   stage: notify
-  image: mcr.microsoft.com/windows/servercore:ltsc2022
   script:
     - echo "Send email notification"
     - |
-      if ($env:CI_JOB_STATUS -eq "success") {
-        curl --url 'smtp://smtp.gmail.com:587' --ssl-reqd `
-          --mail-from 'loganathansmca2014@gmail.com' `
-          --mail-rcpt 'logumca2011@gmail.com' `
-          --user 'loganathansmca2014@gmail.com:India@12354' `
-          -T ([System.Text.Encoding]::UTF8.GetBytes("Subject: Build Success\n\nThe build was successful!"))
-      }
+      if [ "$CI_JOB_STATUS" == "success" ]; then
+        curl --url 'smtp://smtp.gmail.com:587' --ssl-reqd \
+          --mail-from 'loganathansmca2014@gmail.com' \
+          --mail-rcpt 'loganathansmca2014@gmail.com' \
+          --user 'loganathansmca2014@gmail.com:India@12354' \
+          -T <(echo -e "Subject: Build Success\n\nThe build was successful!")
+      fi
