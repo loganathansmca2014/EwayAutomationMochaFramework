@@ -6,28 +6,28 @@ stages:
 
 variables:
   NODE_VERSION: "18"
-  EDGE_VERSION: "stable"
-
-image: node:18  # Single global image to avoid duplication
-
+  DEBIAN_FRONTEND: noninteractive  # Prevent interactive prompts
 before_script:
-  - apt-get update && apt-get install -y wget gnupg2 curl unzip
+  - apt-get update && apt-get install -y wget gnupg2
   - wget -q -O - https://packages.microsoft.com/keys/microsoft.asc | gpg --dearmor > microsoft.gpg
   - mv microsoft.gpg /etc/apt/trusted.gpg.d/microsoft.gpg
-  - echo "deb [arch=amd64] https://packages.microsoft.com/repos/edge $EDGE_VERSION main" > /etc/apt/sources.list.d/microsoft-edge.list
-  - apt-get update && apt-get install -y microsoft-edge-stable
-  - npm ci  # Faster and more reliable than `npm install`
+  - sh -c 'echo "deb [arch=amd64] https://packages.microsoft.com/repos/edge stable main" > /etc/apt/sources.list.d/microsoft-edge.list'
+  - apt-get update
+  - apt-get install -y microsoft-edge-stable
+  - npm install
 
 build:
   stage: build
+  image: node:18
   script:
-    - echo "Checking out code..."
-    - git checkout master
+    - echo "Building project..."
 
 test:
   stage: test
+  image: node:18
   script:
     - echo "Running tests..."
+    - npm ci  # Ensure dependencies are installed before testing
     - npx wdio wdio.conf.ts
   artifacts:
     when: always
@@ -36,6 +36,7 @@ test:
 
 archive:
   stage: archive
+  image: node:18
   script:
     - echo "Archiving test reports..."
   artifacts:
@@ -45,13 +46,14 @@ archive:
 
 notify:
   stage: notify
+  image: node:18
   script:
     - echo "Sending email notification..."
     - |
       if [ "$CI_JOB_STATUS" == "success" ]; then
         curl --url 'smtp://smtp.gmail.com:587' --ssl-reqd \
-          --mail-from 'loganathansmca2014@gmail.com' \
-          --mail-rcpt 'logumca2011@gmail.com' \
-          --user 'loganathansmca2014@gmail.com:India@12354' \
+          --mail-from "$SMTP_USER" \
+          --mail-rcpt "$NOTIFY_EMAIL" \
+          --user "$SMTP_USER:$SMTP_PASS" \
           -T <(echo -e "Subject: Build Success\n\nThe build was successful!")
       fi
