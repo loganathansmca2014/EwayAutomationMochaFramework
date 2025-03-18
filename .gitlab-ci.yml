@@ -6,38 +6,38 @@ stages:
 
 variables:
   NODE_VERSION: "18"
+  EDGE_VERSION: "stable"
+
+image: node:18  # Single global image to avoid duplication
 
 before_script:
-  - apt-get update && apt-get install -y wget gnupg2
+  - apt-get update && apt-get install -y wget gnupg2 curl unzip
   - wget -q -O - https://packages.microsoft.com/keys/microsoft.asc | gpg --dearmor > microsoft.gpg
   - mv microsoft.gpg /etc/apt/trusted.gpg.d/microsoft.gpg
-  - sh -c 'echo "deb [arch=amd64] https://packages.microsoft.com/repos/edge stable main" > /etc/apt/sources.list.d/microsoft-edge.list'
-  - apt-get update
-  - apt-get install -y microsoft-edge-stable
-  - npm install
+  - echo "deb [arch=amd64] https://packages.microsoft.com/repos/edge $EDGE_VERSION main" > /etc/apt/sources.list.d/microsoft-edge.list
+  - apt-get update && apt-get install -y microsoft-edge-stable
+  - npm ci  # Faster and more reliable than `npm install`
 
 build:
   stage: build
-  image: node:18
   script:
-    - echo "Checkout code"
+    - echo "Checking out code..."
     - git checkout master
 
 test:
   stage: test
-  image: node:18
   script:
-    - echo "Run tests"
+    - echo "Running tests..."
     - npx wdio wdio.conf.ts
   artifacts:
+    when: always
     paths:
       - '**/reports/**/*'
 
 archive:
   stage: archive
-  image: node:18
   script:
-    - echo "Archive test reports"
+    - echo "Archiving test reports..."
   artifacts:
     when: always
     paths:
@@ -45,9 +45,8 @@ archive:
 
 notify:
   stage: notify
-  image: node:18
   script:
-    - echo "Send email notification"
+    - echo "Sending email notification..."
     - |
       if [ "$CI_JOB_STATUS" == "success" ]; then
         curl --url 'smtp://smtp.gmail.com:587' --ssl-reqd \
