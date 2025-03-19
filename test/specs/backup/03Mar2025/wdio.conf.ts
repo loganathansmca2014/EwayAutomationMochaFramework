@@ -56,13 +56,18 @@ export const config: WebdriverIO.Config = {
     // https://saucelabs.com/platform/platform-configurator
     //
     // Define the capabilities (we are setting Chrome as the browser)
-
     capabilities: [{
         browserName: 'chrome',
         'goog:chromeOptions': {
-          args: ['--no-sandbox', '--disable-dev-shm-usage'],
+            args: [
+                '--headless', 
+                '--disable-gpu', 
+                '--disable-software-rasterizer', 
+                '--no-sandbox', 
+                '--disable-dev-shm-usage'
+            ]
         }
-      }],
+    }],    
     //
     // ===================
     // Test Configurations

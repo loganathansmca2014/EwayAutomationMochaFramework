@@ -2,6 +2,9 @@ import os from 'os';
 let startTime: Date; // ✅ Declare globally
 let endTime: Date;
 
+import dotenv from 'dotenv';
+dotenv.config();
+
 import { getEnvironmentDetails } from "./test/utils/environment"; // Import your function
 
 // ✅ Declare globally
@@ -51,7 +54,7 @@ export const config: WebdriverIO.Config = {
     // of the config file unless it's absolute.
     //
     specs: [
-        './test/specs/**/ewayCustomer.ts'
+        './test/specs/**/mmtSearch.ts'
     ],
     // Patterns to exclude.
     exclude: [
@@ -84,7 +87,7 @@ export const config: WebdriverIO.Config = {
     capabilities: [{
         browserName: 'chrome',
         'goog:chromeOptions': {
-          args: ['--headless', '--no-sandbox', '--disable-dev-shm-usage']
+        //   args: ['--headless', '--no-sandbox', '--disable-dev-shm-usage']
         }
       }],
       

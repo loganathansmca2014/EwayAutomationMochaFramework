@@ -1,0 +1,13 @@
+{
+    "environments": {
+      "QA": "https://qa.makemytrip.com",
+      "UAT": "https://uat.makemytrip.com",
+      "PROD": "https://www.makemytrip.com"
+    },
+    "searchData": {
+      "from": "New Delhi, India",
+      "to": "Mumbai, India",
+      "departureDate": "2025-03-20"
+    }
+  }
+  

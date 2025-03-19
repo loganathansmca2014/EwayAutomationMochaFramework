@@ -1,6 +1,5 @@
 {
   "name": "EwayAutomationMocha",
-  "type": "module",
   "devDependencies": {
     "@faker-js/faker": "^9.6.0",
     "@types/winston": "^2.4.4",
