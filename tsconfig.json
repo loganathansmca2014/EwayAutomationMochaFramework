@@ -1,8 +1,9 @@
 {
     "compilerOptions": {
-        "moduleResolution": "node",
+        "target": "ES6",
+        "moduleResolution": "Node",
+        "outDir": "./dist",
         "module": "ESNext",
-        "target": "es2022",
         "lib": [
             "es2022",
             "dom"
@@ -26,7 +27,7 @@
         "noFallthroughCasesInSwitch": true
     },
     "include": [
-        "wdio.conf.ts"
+        "wdio.conf.ts","./test/**/*.ts", "./wdio*.ts"
     ],
     "exclude": [
         "node_modules"

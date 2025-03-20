@@ -2,7 +2,7 @@ class EwayCustomerContact {
 
 
     get customerContactlabel() {
-        return $('(//mat-card-header[@class="mat-mdc-card-header mb-3"])//div');
+        return $('(//span[contains(text(),"Next")])[2]');
     }
 
 

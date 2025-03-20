@@ -54,7 +54,7 @@ export const config: WebdriverIO.Config = {
     // of the config file unless it's absolute.
     //
     specs: [
-        './test/specs/**/mmtSearch.ts'
+        './test/specs/**/ewayCustomer.ts'
     ],
     // Patterns to exclude.
     exclude: [

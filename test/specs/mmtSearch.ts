@@ -6,7 +6,7 @@ import { getConfig, EnvironmentConfig } from "../config/config";
  * Get Environment dynamically from command line argument
  */
 const getEnvironment = (): string => {
-    return process.env.TEST_ENV || "PROD"; // Default to PROD if not provided
+    return process.env.TEST_ENV || "QA"; // Default to PROD if not provided
 };
 
 describe("MakeMyTrip Flight Search - Page Object Model", function () {

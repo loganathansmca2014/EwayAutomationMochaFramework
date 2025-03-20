@@ -19,7 +19,7 @@ describe("Feature :Customer OnBoard Page", () => {
     beforeEach('Before each Test', async () => {
         logger.info("Opening browser...");
        // await Eway.ewayLoginAuth(practices.getEnvironmentConfig().envName )
-        await EwayLoginPage.launchApplication('./');
+        await EwayLoginPage.launchApplication('http://eway-dev.keenminds.in/');
     });
 
     it("TC01_Customer can give the Basic details", async () => {
