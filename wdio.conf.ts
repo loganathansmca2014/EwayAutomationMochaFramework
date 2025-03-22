@@ -5,7 +5,7 @@ let endTime: Date;
 import dotenv from 'dotenv';
 dotenv.config();
 
-import { getEnvironmentDetails } from "./test/utils/environment"; // Import your function
+//import { getEnvironmentDetails } from "./test/utils/environment"; // Import your function
 
 // ✅ Declare globally
 function getBrowserStackOS() {
@@ -123,7 +123,7 @@ export const config: WebdriverIO.Config = {
     // with `/`, the base url gets prepended, not including the path portion of your baseUrl.
     // If your `url` parameter starts without a scheme or `/` (like `some/path`), the base url
     // gets prepended directly.
-    baseUrl: process.env.BASE_URL || 'http://default-url.com', // ✅ Use env variable
+  //  baseUrl: process.env.BASE_URL || 'http://default-url.com', // ✅ Use env variable
     
    
     //

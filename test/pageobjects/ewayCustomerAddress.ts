@@ -50,5 +50,10 @@ class EwayCustomerAddress {
     {
         return $('(//i[text()="add"]/following-sibling::span)[3]')
     }
+
+    get NextBtn()
+    {
+        return $("(//span[contains(text(),'Next')])[2]")
+    }
 }
 export default new EwayCustomerAddress();

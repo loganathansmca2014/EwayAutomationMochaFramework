@@ -1,7 +1,7 @@
 import { fa, faker } from "@faker-js/faker";
-import logger from '../utils/logger'; // 
 import ewayCustomerAddress from "../pageobjects/ewayCustomerAddress";
 import CustomerObBoard from '../pageobjects/ewayCustomerPage'
+import { scrollIntoView } from "webdriverio/build/commands/element";
 class EwayCustomerAddressflow
 {
 
@@ -40,9 +40,16 @@ async customerAddressInputForm(name: string, address1: string, address2: string,
 
             await this.selectDropdownValue(dropdownCity, 'Chennai');
             await ewayCustomerAddress.customerPincode.setValue(zipCode);
-            await ewayCustomerAddress.addAddressIcon.click();
+            await browser.execute(() => {
+                window.scrollBy(0, -100); // Scroll up by 500 pixels
+            });
+                        await ewayCustomerAddress.addAddressIcon.click();
             console.log("✅ Address has been Added...");
-            await CustomerObBoard.clickcustomerContact.click();
+            await browser.execute(() => {
+                window.scrollBy(0, -1000); // Scroll up by 500 pixels
+            });
+            
+            await ewayCustomerAddress.NextBtn.click();
             console.log("✅ Clicked Customer Contact Form...");
 
         }
