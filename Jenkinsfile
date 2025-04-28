@@ -1,50 +1,23 @@
-
 pipeline {
     agent any
-
-    triggers {
+     triggers {
         githubPush()  // This enables webhook-based triggering
     }
-
     stages {
-        stage('Checkout') {
-            steps {
-                git branch: 'master', url: 'https://github.com/loganathansmca2014/EwayAutomationMochaFramework.git'
-            }
-        }
-
         stage('Build') {
             steps {
-                echo 'Building the project...'
-                bat 'npm install'  // Example for Node.js projects
+                echo 'Building...'
             }
         }
-
         stage('Test') {
             steps {
-                echo 'Running Tests...'
-                bat 'npx wdio wdio.conf.ts'  // Example test command
-            }
-            post {
-                always {
-                    archiveArtifacts artifacts: '**/reports/**/*', allowEmptyArchive: true
-                }
+                echo 'Testing...'
             }
         }
-
         stage('Deploy') {
             steps {
-                echo 'Deploying Application...'
+                echo 'Deploying...'
             }
-        }
-    }
-
-    post {
-        always {
-            echo "Pipeline Execution Completed!"
-        }
-        failure {
-            echo "Pipeline Failed! Check the logs."
         }
     }
 }

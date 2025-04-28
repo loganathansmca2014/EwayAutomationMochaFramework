@@ -34,6 +34,9 @@ class EwayCustomerContactFlow {
         await ewayCustomerContact.designation.setValue(designation);
         await ewayCustomerContact.mobile.setValue(mobile);
         await ewayCustomerContact.email.setValue(email);
+        logger.info(`✅ Customer contactPerson. added ${contactPerson} successfully.`);
+        logger.info(`✅ Customer designation. added ${designation} successfully.`);
+        logger.info(`✅ Customer mobile. added ${mobile} successfully.`);
 
         // Set optional fields if provided
         if (alternativeNo?.trim()) await ewayCustomerContact.alternateMobile.setValue(alternativeNo);
